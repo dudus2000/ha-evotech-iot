@@ -10,7 +10,7 @@ from .const import DOMAIN, CONF_API_URL, CONF_TOKEN
 _LOGGER = logging.getLogger(__name__)
 
 DATA_SCHEMA = vol.Schema({
-    vol.Required(CONF_API_URL, default="https://twojastrona.pl/wp-json/evotech/v1"): str,
+    vol.Required(CONF_API_URL, default="https://evotechcar.pl/wp-json/evotech/v1"): str,
     vol.Required(CONF_TOKEN): str,
 })
 
@@ -43,3 +43,4 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 errors["base"] = "cannot_connect"
 
         return self.async_show_form(step_id="user", data_schema=DATA_SCHEMA, errors=errors)
+
