@@ -17,8 +17,11 @@ DATA_SCHEMA = vol.Schema({
 async def validate_input(hass: HomeAssistant, data: dict):
     """Validate the user input allows us to connect."""
     session = async_get_clientsession(hass)
-    url = f"{data[CONF_API_URL]}/ha/devices?token={data[CONF_TOKEN]}"
+    api_url = data[CONF_API_URL].rstrip("/")
+    url = f"{api_url}/ha/devices?token={data[CONF_TOKEN]}"
     headers = {"Authorization": f"Bearer {data[CONF_TOKEN]}"}
+    
+    _LOGGER.error("DEBUG CONNECTING TO: %s", url)
     
     async with session.get(url, headers=headers, ssl=False) as resp:
         if resp.status != 200:

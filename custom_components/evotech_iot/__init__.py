@@ -16,13 +16,19 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     # 1. Fetch devices definitions (once)
     session = async_get_clientsession(hass)
-    device_def_url = f"{api_url}/ha/devices"
+    device_def_url = f"{api_url}/ha/devices?token={token}"
     
     try:
         async with session.get(device_def_url, headers={"Authorization": f"Bearer {token}"}) as resp:
             if resp.status != 200:
                 return False
-            data = await resp.json()
+            text = await resp.text()
+            # Aggressive cleanup
+            idx = text.find("{")
+            if idx != -1: text = text[idx:]
+            
+            import json
+            data = json.loads(text)
             devices_definitions = data.get("devices", [])
     except Exception as e:
         _LOGGER.error("Failed to fetch definitions: %s", e)

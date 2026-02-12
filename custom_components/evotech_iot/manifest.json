@@ -1,12 +1,11 @@
 {
   "domain": "evotech_iot",
-  "name": "Krystian IoT",
+  "name": "Evotech Car IoT",
   "codeowners": [],
   "config_flow": true,
   "documentation": "https://evotechcar.pl",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/evotech/issues",
   "requirements": [],
-  "version": "1.1.0"
-
+  "version": "1.0.4"
 }

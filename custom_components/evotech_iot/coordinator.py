@@ -12,6 +12,7 @@ class EvotechCoordinator(DataUpdateCoordinator):
 
     def __init__(self, hass, api_url, token):
         self.api_url = api_url
+        self.token = token
         self.headers = {"Authorization": f"Bearer {token}"}
         self.session = async_get_clientsession(hass)
 
@@ -20,17 +21,22 @@ class EvotechCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self):
         """Fetch data from API endpoint."""
         try:
-            url = f"{self.api_url}/ha/states"
+            url = f"{self.api_url}/ha/states?token={self.token}"
             async with self.session.get(url, headers=self.headers) as resp:
                 if resp.status != 200:
                     raise UpdateFailed(f"Error communicating with API: {resp.status}")
-                return await resp.json()
+                text = await resp.text()
+                # Aggressive cleanup
+                idx = text.find("{")
+                if idx != -1: text = text[idx:]
+                import json
+                return json.loads(text)
         except Exception as err:
             raise UpdateFailed(f"Error communicating with API: {err}")
 
     async def send_command(self, device_id, entity_key, state):
         """Send command to API."""
-        url = f"{self.api_url}/ha/control"
+        url = f"{self.api_url}/ha/control?token={self.token}"
         payload = {
             "device_id": device_id,
             "entity_key": entity_key,
