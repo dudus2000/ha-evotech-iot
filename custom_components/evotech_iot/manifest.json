@@ -1,6 +1,6 @@
 {
   "domain": "evotech_iot",
-  "name": "Evotech Car IoT",
+  "name": "Krystian Car IoT",
   "codeowners": [],
   "config_flow": true,
   "documentation": "https://evotechcar.pl",
