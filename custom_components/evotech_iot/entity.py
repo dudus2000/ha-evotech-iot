@@ -22,7 +22,7 @@ class EvotechEntity(CoordinatorEntity):
             name=self.device_def["name"],
             model=self.device_def.get("model"),
             sw_version=self.device_def.get("sw_version"),
-            manufacturer="Evotech Car",
+            manufacturer="Krystian Car",
         )
 
     @property
