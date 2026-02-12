@@ -10,7 +10,7 @@ from .const import DOMAIN, CONF_API_URL, CONF_TOKEN
 _LOGGER = logging.getLogger(__name__)
 
 DATA_SCHEMA = vol.Schema({
-    vol.Required(CONF_API_URL, default="https://twojastrona.pl/wp-json/evotech/v1"): str,
+    vol.Required(CONF_API_URL, default="https://evotechcar.pl/wp-json/evotech/v1"): str,
     vol.Required(CONF_TOKEN): str,
 })
 
@@ -18,6 +18,13 @@ async def validate_input(hass: HomeAssistant, data: dict):
     """Validate the user input allows us to connect."""
     session = async_get_clientsession(hass)
     api_url = data[CONF_API_URL].rstrip("/")
+    
+    # Auto-fix URL if user provided base domain only
+    if "/wp-json" not in api_url:
+        api_url += "/wp-json/evotech/v1"
+    elif "/evotech/v1" not in api_url:
+        api_url += "/evotech/v1"
+
     url = f"{api_url}/ha/devices?token={data[CONF_TOKEN]}"
     headers = {"Authorization": f"Bearer {data[CONF_TOKEN]}"}
     

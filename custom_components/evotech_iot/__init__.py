@@ -23,6 +23,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             if resp.status != 200:
                 return False
             text = await resp.text()
+            _LOGGER.error("DEBUG INIT RAW: %r", text[:500]) # Log first 500 chars
+
             # Aggressive cleanup
             idx = text.find("{")
             if idx != -1: text = text[idx:]
